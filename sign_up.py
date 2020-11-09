@@ -10,7 +10,8 @@ import time
 
 # Add or remove names of members to enable/disable the script for that member
     # dependency: having the members' matching name and login info in data.txt
-active_members = ["Jeffrey Shum", "Samphors Phal", "Phaline Taing", "Nikhil Mani"]
+active_members = ["Phaline Taing", "Nikhil Mani", "Sereyamrith Bun"]
+    # inactives: "Jeffrey Shum", "Samphors Phal"
 
 '''
 Creating date variables:
@@ -18,15 +19,26 @@ Creating date variables:
 today = datetime.today()
 seven_days_from_today = today + timedelta(days=7)
 date_string = seven_days_from_today.strftime("%A %B %e") # %e is the day numner with a space instead of a leading zero
-class_time = "6:15 AM - 7:00 AM"
+class_time = "6:00 AM - 6:45 AM"
 year = str(seven_days_from_today.year)
 month = str(seven_days_from_today.month)
 day = str(seven_days_from_today.day)
 weekday = today.weekday()
 day_var = weekday + 3 #this is used to compose the xpath to the sign-up link depending on what day of the week it is
 
+
 '''
-Processing data from text files:
+Creating a dict of user's login data
+'''
+with open("/Users/jeff/cfamatak_automation/data.txt") as file:
+    lines = file.readlines()
+    lst = []
+    for line in lines:
+        line = line.strip().split(',')
+        lst.append(line)
+    member_data = { item[0]: [item[1], item[2], item[3]] for item in lst}
+'''
+Processing data from url file
 '''
 with open("/Users/jeff/cfamatak_automation/urls.txt") as file:
     urls = file.readlines()
@@ -35,30 +47,23 @@ with open("/Users/jeff/cfamatak_automation/urls.txt") as file:
         url = url.strip()
         lst.append(url)
     login_url = lst[0]
-    calendar_url = lst[1] + f"{year}-{month}-{day}"
+    calendar_url = lst[1] + f"{year}-{month}-{day}&calendarType=PERSON:"
+    #calendar_url = lst[1] + f"{year}-{month}-{day}"
     logout_url = lst[2]
 
-'''
-Creating a dict of user's login data:
-'''
-with open("/Users/jeff/cfamatak_automation/data.txt") as file:
-    lines = file.readlines()
-    lst = []
-    for line in lines:
-        line = line.strip().split(',')
-        lst.append(line)
-    member_data = { item[0]: [item[1], item[2]] for item in lst}
         
-# Setting up xpath and Chrome webdriver
-'''     
-Something is wrong with the html here, likely because the html element is wrong due to Thursday running workshop.
 '''
-if weekday == 3: #check if signing up for Thursday class
-    xpath_615AM = f"/html/body/div/table/tbody/tr/td[2]/table[2]/tbody/tr/td[{day_var}]/div/div[1]"
-else:
-    xpath_615AM = f"/html/body/div/table/tbody/tr/td[2]/table[2]/tbody/tr/td[{day_var}]/div/div[3]"
+Setting up xpath and Chrome webdriver
+'''
 PATH = "/Users/jeff/chromedriver"
 driver = webdriver.Chrome(PATH)
+xpath_6AM = f"/html/body/div/table/tbody/tr/td[2]/table[2]/tbody/tr/td[{day_var}]/div/div[2]"
+    # OLD CODE
+        #if weekday == 3: #check if signing up for Thursday class
+        #    xpath_615AM = f"/html/body/div/table/tbody/tr/td[2]/table[2]/tbody/tr/td[{day_var}]/div/div[1]"
+        #else:
+        #    xpath_615AM = f"/html/body/div/table/tbody/tr/td[2]/table[2]/tbody/tr/td[{day_var}]/div/div[3]"
+
 
 def login(login_url, email_address, password):   
     driver.get(login_url)
@@ -84,11 +89,12 @@ TODO: the code below is a starting point for running Javascript.
     #        driver.execute_script(‘return document.title;’)
 ''' 
 
-def sign_up(calendar_url, xpath, member_name):
+def sign_up(calendar_url, xpath, member_name, member_id):
+    calendar_url = calendar_url + member_id
     driver.get(calendar_url)
     try:
         elem = WebDriverWait(driver, 5).until(
-            expected_conditions.element_to_be_clickable((By.XPATH, xpath_615AM))
+            expected_conditions.element_to_be_clickable((By.XPATH, xpath_6AM))
         )
         #TODO: enable functionality to click on 7:15AM class elements:
             #driver.execute_script("arguments[0].click;", elem)
@@ -110,8 +116,9 @@ def main():
     for member_name in active_members:
         email_address = member_data[member_name][0]
         password = member_data[member_name][1]
-        login(login_url, email_address, password)
-        sign_up(calendar_url, xpath_615AM, member_name)
+        member_id = member_data[member_name][2]
+        login(login_url, email_address, password,)
+        sign_up(calendar_url, xpath_6AM, member_name, member_id)
 
 if __name__ == "__main__":
     main()
