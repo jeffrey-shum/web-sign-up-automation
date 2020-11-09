@@ -73,21 +73,6 @@ def login(login_url, email_address, password):
     elem.send_keys(password)
     elem.send_keys(Keys.RETURN)
 
-'''
-TODO: the code below is a starting point for running Javascript.
-(This is a potential solution for inability to click 715AM bootcamp class)
-    #IJavaScriptExecutor ex = (IJavaScriptExecutor)Driver;
-    #ex.ExecuteScript("arguments[0].click();", elementToClick);
-    #
-    #execute_script(script, *args)
-    #Synchronously Executes JavaScript in the current window/frame.
-    #
-    #Args:   
-    #    script: The JavaScript to execute.
-    #    *args: Any applicable arguments for your JavaScript.
-    #    Usage:  
-    #        driver.execute_script(‘return document.title;’)
-''' 
 
 def sign_up(calendar_url, xpath, member_name, member_id):
     calendar_url = calendar_url + member_id
@@ -111,6 +96,7 @@ def sign_up(calendar_url, xpath, member_name, member_id):
             print(f"Failed to register {member_name}, manually check whether he/she is signed up for the class.")
     finally:
         driver.get(logout_url)
+
 
 def main():
     for member_name in active_members:
