@@ -1,2 +1,11 @@
-# README.md
-Automating class sign-up for Crossfit Amatak classes.
+# Crossfit Amatak Web Sign-Up
+
+Automating class sign-up for Crossfit Amatak classes
+
+# Technologies
+
+[Selenium](https://github.com/SeleniumHQ/selenium) with [ChromeDriver](https://chromedriver.chromium.org/)
+
+[Cron](https://github.com/Cron/Cron)
+
+[Datetime](https://docs.python.org/3/library/datetime.html)
