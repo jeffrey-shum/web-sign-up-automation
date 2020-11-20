@@ -10,8 +10,8 @@ import time
 
 # Add or remove names of members to enable/disable the script for that member
     # dependency: having the members' matching name and login info in data.txt
-active_members = ["Phaline Taing", "Nikhil Mani", "Sereyamrith Bun"]
-    # inactives: "Jeffrey Shum", "Samphors Phal"
+active_members = ["Jeffrey Shum", "Samphors Phal","Phaline Taing", "Nikhil Mani", "Sereyamrith Bun"]
+    # inactives: 
 
 '''
 Creating date variables:

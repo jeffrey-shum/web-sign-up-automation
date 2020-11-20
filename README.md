@@ -1,2 +1,2 @@
-# cfamatak-automation
-Automating class check-in and class sign-up for bootcamp/crossfit classes
+# README.md
+Automating class sign-up for Crossfit Amatak classes.
