@@ -1,4 +1,4 @@
-# Crossfit Amatak Web Sign-Up
+# Web Sign Up Automation - CF Amatak
 
 Automating class sign-up for Crossfit Amatak classes
 
