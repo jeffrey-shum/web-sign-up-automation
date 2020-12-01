@@ -8,17 +8,21 @@ from selenium.webdriver.support import expected_conditions
 from datetime import timedelta, datetime
 import time
 
-# Add or remove names of members to enable/disable the script for that member
-    # dependency: having the members' matching name and login info in data.txt
+'''
+List of members to sign-up
+'''
 active_members = ["Jeffrey Shum", "Samphors Phal","Phaline Taing", "Nikhil Mani", "Sereyamrith Bun", "Juanita Delvasto"] 
-# inactives: 
+# Add or remove names of members to enable/disable sign-up for that member
+    # dependency: having the members' matching name, login info, and 'Person ID' in data.txt
+    # inactives: 
 
 '''
-Creating date variables:
+Creating date variables
 '''
 today = datetime.today()
 seven_days_from_today = today + timedelta(days=7)
-date_string = seven_days_from_today.strftime("%A %B %e") # %e is the day numner with a space instead of a leading zero
+date_string = seven_days_from_today.strftime("%A %B %e") 
+# '%e' is the day number with a space instead of a leading zero
 class_time = "6:00 AM - 6:45 AM"
 year = str(seven_days_from_today.year)
 month = str(seven_days_from_today.month)
@@ -26,9 +30,8 @@ day = str(seven_days_from_today.day)
 weekday = today.weekday()
 day_var = weekday + 3 #this is used to compose the xpath to the sign-up link depending on what day of the week it is
 
-
 '''
-Creating a dict of user's login data
+Creating a dict of users' login data
 '''
 with open("/Users/jeff/web-sign-up-automation-cfamatak/data.txt") as file:
     lines = file.readlines()
@@ -37,8 +40,9 @@ with open("/Users/jeff/web-sign-up-automation-cfamatak/data.txt") as file:
         line = line.strip().split(',')
         lst.append(line)
     member_data = { item[0]: [item[1], item[2], item[3]] for item in lst}
+
 '''
-Processing data from url file
+Fetching urls
 '''
 with open("/Users/jeff/web-sign-up-automation-cfamatak/urls.txt") as file:
     urls = file.readlines()
@@ -48,9 +52,7 @@ with open("/Users/jeff/web-sign-up-automation-cfamatak/urls.txt") as file:
         lst.append(url)
     login_url = lst[0]
     calendar_url = lst[1] + f"{year}-{month}-{day}&calendarType=PERSON:"
-    #calendar_url = lst[1] + f"{year}-{month}-{day}"
     logout_url = lst[2]
-
         
 '''
 Setting up xpath and Chrome webdriver
@@ -58,17 +60,12 @@ Setting up xpath and Chrome webdriver
 PATH = "/Users/jeff/chromedriver"
 driver = webdriver.Chrome(PATH)
 xpath_6AM = f"/html/body/div/table/tbody/tr/td[2]/table[2]/tbody/tr/td[{day_var}]/div/div[2]"
-    # OLD CODE
-        #if weekday == 3: #check if signing up for Thursday class
-        #    xpath_615AM = f"/html/body/div/table/tbody/tr/td[2]/table[2]/tbody/tr/td[{day_var}]/div/div[1]"
-        #else:
-        #    xpath_615AM = f"/html/body/div/table/tbody/tr/td[2]/table[2]/tbody/tr/td[{day_var}]/div/div[3]"
 
 
 def login(login_url, email_address, password):   
     driver.get(login_url)
     elem = driver.find_element_by_id("idUsername")
-    elem.send_keys(email_address) #TODO: add functionality to sign up for multiple users
+    elem.send_keys(email_address) 
     elem = driver.find_element_by_id("idPassword")
     elem.send_keys(password)
     elem.send_keys(Keys.RETURN)
