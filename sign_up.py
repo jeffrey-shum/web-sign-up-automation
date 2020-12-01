@@ -30,7 +30,7 @@ day_var = weekday + 3 #this is used to compose the xpath to the sign-up link dep
 '''
 Creating a dict of user's login data
 '''
-with open("/Users/jeff/cfamatak_automation/data.txt") as file:
+with open("/Users/jeff/web-sign-up-automation-cfamatak/data.txt") as file:
     lines = file.readlines()
     lst = []
     for line in lines:
@@ -40,7 +40,7 @@ with open("/Users/jeff/cfamatak_automation/data.txt") as file:
 '''
 Processing data from url file
 '''
-with open("/Users/jeff/cfamatak_automation/urls.txt") as file:
+with open("/Users/jeff/web-sign-up-automation-cfamatak/urls.txt") as file:
     urls = file.readlines()
     lst = []
     for url in urls:
