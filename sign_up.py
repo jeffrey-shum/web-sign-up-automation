@@ -11,10 +11,10 @@ import time
 '''
 List of members to sign-up
 '''
-active_members = ["Jeffrey Shum", "Samphors Phal","Phaline Taing", "Nikhil Mani", "Sereyamrith Bun", "Juanita Delvasto"] 
+active_members = ["Jeffrey Shum", "Samphors Phal", "Phaline Taing", "Sereyamrith Bun", "Juanita Delvasto"] 
 # Add or remove names of members to enable/disable sign-up for that member
     # dependency: having the members' matching name, login info, and 'Person ID' in data.txt
-    # inactives: 
+    # inactives: "Nikhil Mani"
 
 '''
 Creating date variables
@@ -33,7 +33,7 @@ day_var = weekday + 3 #this is used to compose the xpath to the sign-up link dep
 '''
 Creating a dict of users' login data
 '''
-with open("/Users/jeff/web-sign-up-automation-cfamatak/data.txt") as file:
+with open("/Users/jeff/Dev/python-dev/web-sign-up-automation-cfamatak/data.txt") as file:
     lines = file.readlines()
     lst = []
     for line in lines:
@@ -44,7 +44,7 @@ with open("/Users/jeff/web-sign-up-automation-cfamatak/data.txt") as file:
 '''
 Fetching urls
 '''
-with open("/Users/jeff/web-sign-up-automation-cfamatak/urls.txt") as file:
+with open("/Users/jeff/Dev/python-dev/web-sign-up-automation-cfamatak/urls.txt") as file:
     urls = file.readlines()
     lst = []
     for url in urls:
@@ -91,6 +91,8 @@ def sign_up(calendar_url, xpath, member_name, member_id):
             print(f"{member_name} was successfully registered for {class_time} Bootcamp class on {date_string}.")
         except:
             print(f"Failed to register {member_name}, manually check whether he/she is signed up for the class.")
+    except:
+        print(f"Something went wrong while registering {member_name}, ensure they have an active membership.")
     finally:
         driver.get(logout_url)
 
