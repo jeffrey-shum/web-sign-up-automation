@@ -11,18 +11,20 @@ import time
 '''
 List of members to sign-up
 '''
-active_members = ["Jeffrey Shum", "Samphors Phal", "Phaline Taing", "Sereyamrith Bun", "Juanita Delvasto"] 
+active_members = {"Jeffrey Shum": "06:00", "Samphors Phal": "06:00",
+                  "Phaline Taing": "06:00", "Sereyamrith Bun": "06:00",
+                  "Juanita Delvasto": "06:00", "Nikhil Mani": "05:15",
+                  "Venus Hoy": "05:15"}
 # Add or remove names of members to enable/disable sign-up for that member
     # dependency: having the members' matching name, login info, and 'Person ID' in data.txt
-    # inactives: "Nikhil Mani"
+    # inactives: 
 
 '''
 Creating date variables
 '''
 today = datetime.today()
 seven_days_from_today = today + timedelta(days=7)
-date_string = seven_days_from_today.strftime("%A %B %e") 
-# '%e' is the day number with a space instead of a leading zero
+date_string = seven_days_from_today.strftime("%A %B %e") #'%e' is the day number with a space instead of a leading zero
 class_time = "6:00 AM - 6:45 AM"
 year = str(seven_days_from_today.year)
 month = str(seven_days_from_today.month)
@@ -59,9 +61,10 @@ Setting up xpath and Chrome webdriver
 '''
 PATH = "/Users/jeff/chromedriver"
 driver = webdriver.Chrome(PATH)
-xpath_6AM = f"/html/body/div/table/tbody/tr/td[2]/table[2]/tbody/tr/td[{day_var}]/div/div[2]"
-
-
+xpaths = {'05:15': f'/html/body/div/table/tbody/tr/td[2]/table[2]/tbody/tr/td[{day_var}]/div/div[1]',
+          '06:00': f'/html/body/div/table/tbody/tr/td[2]/table[2]/tbody/tr/td[{day_var}]/div/div[2]',
+          '07:00': f'/html/body/div/table/tbody/tr/td[2]/table[2]/tbody/tr/td[{day_var}]/div/div[3]'}
+          
 def login(login_url, email_address, password):   
     driver.get(login_url)
     elem = driver.find_element_by_id("idUsername")
@@ -70,16 +73,13 @@ def login(login_url, email_address, password):
     elem.send_keys(password)
     elem.send_keys(Keys.RETURN)
 
-
 def sign_up(calendar_url, xpath, member_name, member_id):
     calendar_url = calendar_url + member_id
     driver.get(calendar_url)
     try:
         elem = WebDriverWait(driver, 5).until(
-            expected_conditions.element_to_be_clickable((By.XPATH, xpath_6AM))
+            expected_conditions.element_to_be_clickable((By.XPATH, xpath))
         )
-        #TODO: enable functionality to click on 7:15AM class elements:
-            #driver.execute_script("arguments[0].click;", elem)
         elem.click()
 
         try:
@@ -88,7 +88,7 @@ def sign_up(calendar_url, xpath, member_name, member_id):
             )
             time.sleep(5)
             elem.click()
-            print(f"{member_name} was successfully registered for {class_time} Bootcamp class on {date_string}.")
+            print(f"{member_name} was successfully registered for {active_members[member_name]} Bootcamp class on {date_string}.")
         except:
             print(f"Failed to register {member_name}, manually check whether he/she is signed up for the class.")
     except:
@@ -98,12 +98,13 @@ def sign_up(calendar_url, xpath, member_name, member_id):
 
 
 def main():
-    for member_name in active_members:
+    for member_name, class_desired in active_members.items():
         email_address = member_data[member_name][0]
         password = member_data[member_name][1]
         member_id = member_data[member_name][2]
+        xpath = xpaths[class_desired]
         login(login_url, email_address, password,)
-        sign_up(calendar_url, xpath_6AM, member_name, member_id)
+        sign_up(calendar_url, xpath, member_name, member_id)
 
 if __name__ == "__main__":
     main()
