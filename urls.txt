@@ -1,0 +1,3 @@
+https://crossfitamatak.sites.zenplanner.com/login.cfm
+https://crossfitamatak.sites.zenplanner.com/calendar.cfm?DATE=
+https://crossfitamatak.sites.zenplanner.com/login.cfm?logout=true
